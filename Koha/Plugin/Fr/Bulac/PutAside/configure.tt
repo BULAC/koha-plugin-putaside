@@ -1,0 +1,69 @@
+[% USE KohaDates %]
+[% USE raw %]
+[% SET footerjs = 1 %]
+[% INCLUDE 'doc-head-open.inc' %]
+[% TRY %]
+  [% PROCESS "$PLUGIN_DIR/i18n/${LANG}.inc" %]
+[% CATCH %]
+  [% PROCESS "$PLUGIN_DIR/i18n/default.inc" %]
+[% END %]
+
+    <title>[% TOKENS.PUTASIDE_CONF %]</title>
+    [% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body>
+    [% INCLUDE 'header.inc' %]
+    [% INCLUDE 'prefs-admin-search.inc' %]
+
+    <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Koha</a> &rsaquo; <a href="/cgi-bin/koha/plugins/plugins-home.pl">Plugins</a> &rsaquo; <span>[% TOKENS.PLUGIN_NAME %]</span> &rsaquo; <span>Configuration</span></div>
+
+</div>
+    <div class="main container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                [% IF config_success %]
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">[% TOKENS.SUCCESS_ALERT %]</h3>
+                        </div>
+                        <div class="panel-body">[% TOKENS.CONFIG_SUCCESS %]</div>
+                    </div>
+                [% END %]
+                [% IF config_error %]
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">[% TOKENS.ERROR_ALERT %]</h3>
+                        </div>
+                        <div class="panel-body" data-i18n-key="[% TOKENS.CONFIG_ERROR %]"></div>
+                    </div>
+                [% END %]                   
+                <!-- Notice our form here has no 'action', this is good, it means that our forms will always get passed back to 'plugins/run.pl'. You could hard code it instead if you prefer -->
+                <form method="post">
+                    <input type="hidden" name="class" value="[% CLASS %]"/>
+                    <input type="hidden" name="method" value="[% METHOD %]"/>
+                    <div class="rows">
+                    <!-- Always pass these two parameters so the plugin system knows what to execute! -->
+                        <h3>[% CONF_TITLE %]</h3>
+                        <ol>
+                            <li>
+                                <label for="putaside_itemtypes"><span class="label">[% TOKENS.ENABLED_ITEMTYPES %] :</span></label>
+                                    <select id="putaside_itemtypes" name="putaside_itemtypes" multiple>
+                                    [% FOREACH itemtype IN itemtypes %]
+										<option value="[% itemtype.itemtype | html %]"[% IF putaside_itemtypes.grep('^' _ itemtype.itemtype _ '$').size %] selected="selected"[% END %]>[% itemtype.translated_description | html %] </option>
+
+                                    [% END %]
+                                </select>
+                            </li>
+                        </ol>
+
+                    </div>
+                    
+                    <input type="hidden" name="save" value="1" />
+                    <hr />
+                    <button type="submit">[% TOKENS.SAVE_BUTTON %]</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    [% INCLUDE 'intranet-bottom.inc' %]

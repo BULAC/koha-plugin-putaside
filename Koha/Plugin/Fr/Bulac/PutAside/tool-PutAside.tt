@@ -1,0 +1,96 @@
+[% INCLUDE 'doc-head-open.inc' %]
+[% TRY %]
+[% PROCESS "$PLUGIN_DIR/i18n/${LANG}.inc" %]
+[% CATCH %]
+[% PROCESS "$PLUGIN_DIR/i18n/default.inc" %]
+[% END %]
+<title>Koha &rsaquo; Circulation &rsaquo; [% TOKENS.PLUGIN_NAME %]</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body>
+  [% INCLUDE 'header.inc' %]
+  [% INCLUDE 'cat-search.inc' %]
+
+
+  <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a> &rsaquo; [% TOKENS.PLUGIN_NAME %] </div>
+
+  <div class="col-sm-12">
+    <main>
+      <div class="col-sm-10 col-sm-push-2">
+        [% IF errors %]
+        <div class="row">
+          <div class="dialog alert">
+            [% IF errors.BAD_BARCODE %]
+            <p>[% EBADBARCODE %] [% errors.TOKENS.BAD_BARCODE %]</p>
+            [% END %]
+            [% IF errors.NOT_ONLOAN %]
+            <p>[% errors.NOT_ONLOAN %] [% TOKENS.ENOTONLOAN %]</p>
+            [% END %]
+            [% IF errors.CANT_RESERVE %]
+            <p>[% errors.CANT_RESERVE %] [% TOKENS.ECANTRESERVE %]</p>
+            [% END %]
+            [% IF errors.BAD_ITYPE %]
+            <p>[% TOKENS.EBADITYPE %] [% errors.BAD_ITYPE %]</p>
+            [% END %]
+          </div>
+        </div>
+        [% END %]
+        <div class="row">
+          <!-- Notice our form here has no 'action', this is good, it means that our forms will always get passed back to 'plugins/run.pl'. You could hard code it instead if you prefer -->
+          <form id="putaside-form" method="post">
+            <input type="hidden" name="class" value="[% CLASS %]"/>
+            <input type="hidden" name="method" value="[% METHOD %]"/>
+            <div class="static_putaside_messages">
+            </div>
+            <fieldset id="circ_putaside_checkin">
+              <h3>[% PLUGIN_NAME %]</h3>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="hint">[% TOKENS.ENTER_BARCODE %]</div>
+                  <div class="form-control-group">
+                    <input name="barcode" id="barcode" size="14" class="barcode focus">
+                    <button type="submit" class="btn btn-default">[% TOKENS.PLUGIN_NAME %]</button>
+                  </div>
+                </div>
+              </div>
+            </fieldset> <!-- /#circ_putaside_checkin -->
+          </form>
+        </div>
+        [% IF (resid) %]
+        <div class="row">
+          <p>[% ITEM_PUT_ASIDE %][% reserve.borrower.firstname |html %] [% reserve.borrower.surname |html %] <b>([%  reserve.borrower.cardnumber |html %])</b> :</p>
+          <table id="checkedintable">
+            <thead>
+              <tr>
+                <th class="ci-title">[% TOKENS.TITLE %]</th>
+                <th class="ci-author">[% TOKENS.AUTHOR %]</th>
+                <th class="ci-barcode">[% TOKENS.BARCODE %]</th>
+                <th class="ci-homelibrary">[% TOKENS.HOME_LIBRARY %]</th>
+                <th class="ci-callnumber">[% TOKENS.CALLNUMBER %]</th>
+                <th class="ci-itemtype">[% TOKENS.ITYPE %]</th>
+                <th class="ci-note">[% TOKENS.NOTES %]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>[% item.biblio.title | html %]</td>
+                <td>[% item.biblio.author | html %]</td>
+                <td><a href="/cgi-bin/koha/catalogue/search.pl?q=[% item.barcode | html %]">[% item.barcode | html %]</a></td>
+                <td>[% reserve.branchcode | html %]</td>
+                <td>[% item.itemcallnumber | html %]</td>
+                <td>[% item.itype | html %]</td>
+                <td>[% reserve.reservenotes | html %]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        [% END %]
+      </div>
+      <div class="col-sm-2 col-sm-pull-10">
+        <aside>
+        [% INCLUDE 'circ-nav.inc' %]
+        </aside>
+      </div>
+    </main>
+  </div>
+  [% INCLUDE 'intranet-bottom.inc' %]
