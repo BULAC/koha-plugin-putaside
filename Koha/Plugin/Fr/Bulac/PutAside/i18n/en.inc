@@ -19,5 +19,6 @@
                         CALLNUMBER = "Call Number"
                         ITYPE = "Item Type"
                         NOTES = "Notes"
+                        FOR_PATRON = "For patron"
 		}
 	%]

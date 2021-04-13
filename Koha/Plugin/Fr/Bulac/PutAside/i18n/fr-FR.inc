@@ -19,7 +19,6 @@
                         CALLNUMBER = "Cote"
                         ITYPE = "Catégorie de prêt"
                         NOTES = "Notes"
-                        
-
+                        FOR_PATRON = "Pour le lecteur"
 		}
 	%]
