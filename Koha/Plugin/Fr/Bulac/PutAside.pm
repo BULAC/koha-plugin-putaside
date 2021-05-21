@@ -203,10 +203,10 @@ sub intranet_js {
     else {
         $js_strings = $i18n->{en};
     }
-    my $menu_href = '<li><a href="https://preprod-intranet.bulac.fr/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">'. $js_strings->{putaside} .'</a></li>';
-    my $menu_href_current = '<li><a class="current" href="https://preprod-intranet.bulac.fr/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">'. $js_strings->{putaside} .'</a></li>';
-    my $circ_button = '<li><a class="circ-button" href="https://preprod-intranet.bulac.fr/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool"><i class="fa fa-spinner"></i> '. $js_strings->{putaside} .'</a></li>';
-    my $borrow_button = '<li><a class="circ-button" href="https://preprod-intranet.bulac.fr/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">' . $js_strings->{putaside} . '</a></li>';
+    my $menu_href = '<li><a href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">'. $js_strings->{putaside} .'</a></li>';
+    my $menu_href_current = '<li><a class="current" href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">'. $js_strings->{putaside} .'</a></li>';
+    my $circ_button = '<li><a class="circ-button" href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool"><i class="fa fa-spinner"></i> '. $js_strings->{putaside} .'</a></li>';
+    my $borrow_button = '<li><a class="circ-button" href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">' . $js_strings->{putaside} . '</a></li>';
      return q|
          <script>
 $(document).ready(function(){
