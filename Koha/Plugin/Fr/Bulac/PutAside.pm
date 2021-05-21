@@ -35,7 +35,7 @@ use Koha::Holds;
 
 use Koha::Plugin::Fr::Bulac::PutAside::i18n;
 
-our $VERSION = "0.2.1";
+our $VERSION = "0.2.2";
 
 our $metadata = {
     name            => 'Putaside',
