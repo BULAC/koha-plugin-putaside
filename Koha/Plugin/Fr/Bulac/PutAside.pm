@@ -35,7 +35,7 @@ use Koha::Holds;
 
 use Koha::Plugin::Fr::Bulac::PutAside::i18n;
 
-our $VERSION = "0.2.2";
+our $VERSION = "0.2.3";
 
 our $metadata = {
     name            => 'Putaside',
@@ -203,30 +203,17 @@ sub intranet_js {
     else {
         $js_strings = $i18n->{en};
     }
-    my $menu_href = '<li><a href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">'. $js_strings->{putaside} .'</a></li>';
-    my $menu_href_current = '<li><a class="current" href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">'. $js_strings->{putaside} .'</a></li>';
     my $circ_button = '<li><a class="circ-button" href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool"><i class="fa fa-spinner"></i> '. $js_strings->{putaside} .'</a></li>';
-    my $borrow_button = '<li><a class="circ-button" href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool">' . $js_strings->{putaside} . '</a></li>';
+
      return q|
          <script>
 $(document).ready(function(){
 
-    var pathname = window.location.pathname;
-    var url      = window.location.href; 
-    var origin   = window.location.origin;
-    if (pathname.search(/\/circ\//)) {
-          $( "#navmenulist > ul:nth-of-type(2) > li:nth-child(2)" ).after('|. $menu_href.q|');
-    }
-    else if (url.search(/PutAside/)) {
-          $( "#navmenulist > ul:nth-of-type(2) > li:nth-child(2)" ).after('|. $menu_href_current .q|');
-    }
-    if (pathname.search(/circulation-home.pl/)) {
+    $("#header > ul#toplevelmenu > li").first().after("<li><a href='/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3AFr%3A%3ABulac%3A%3APutAside&method=tool'> |.  $js_strings->{putaside} .q| </li>");
+    if (pathname.search(/circulation-home.pl/) >= 0 ) {
       $( "ul.buttons-list:first > li:nth-child(2)" ).after('|. $circ_button.q|');
     }
-    if (pathname.search(/moremember.pl/) \|\| pathname.search(/circulation.pl/) ) {
-      $( "#menu > ul > li:nth-child(1)" ).after('|. $borrow_button .q|');
-    }
-    
+
 });
          </script>
          |;
