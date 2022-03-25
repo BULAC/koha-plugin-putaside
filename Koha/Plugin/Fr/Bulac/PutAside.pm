@@ -25,17 +25,17 @@ use base qw(Koha::Plugins::Base);
 use C4::Context;
 use C4::Auth;
 use C4::Biblio;
-use C4::Reserves;
-use C4::Circulation;
+use C4::Reserves qw(CanItemBeReserved AddReserve ModReserveAffect);
+use C4::Circulation qw(GetOpenIssue AddReturn);
 use C4::Stats;
 
-use Koha::DateUtils;
+use Koha::DateUtils qw(dt_from_string output_pref);
 use Koha::Items;
 use Koha::Holds;
 
 use Koha::Plugin::Fr::Bulac::PutAside::i18n;
 
-our $VERSION = "0.2.3";
+our $VERSION = "0.2.4";
 
 our $metadata = {
     name            => 'Putaside',
