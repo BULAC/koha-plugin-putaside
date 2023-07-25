@@ -26,12 +26,13 @@ use C4::Context;
 use C4::Auth;
 use C4::Biblio;
 use C4::Reserves qw(CanItemBeReserved AddReserve ModReserveAffect);
-use C4::Circulation qw(GetOpenIssue AddReturn);
+use C4::Circulation qw(AddReturn);
 use C4::Stats;
 
 use Koha::DateUtils qw(dt_from_string output_pref);
 use Koha::Items;
 use Koha::Holds;
+use Koha::Checkouts;
 
 use Koha::Plugin::Fr::Bulac::PutAside::i18n;
 
@@ -118,7 +119,7 @@ sub tool_putaside {
             $errors->{'BAD_BARCODE'} = $barcode ;
         }
         else {
-            my $openissue = GetOpenIssue($item->itemnumber);
+            my $openissue = Koha::Checkouts->find({ itemnumber => $item->{'itemnumber'} });;
             if (! $openissue) {
                 $errors->{'NOT_ONLOAN'} = $barcode ;
             }
