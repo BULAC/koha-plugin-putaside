@@ -119,17 +119,18 @@ sub tool_putaside {
             $errors->{'BAD_BARCODE'} = $barcode ;
         }
         else {
-            my $openissue = Koha::Checkouts->find({ itemnumber => $item->{'itemnumber'} });;
-            if (! $openissue) {
+            my $openissue = Koha::Checkouts->find({ itemnumber => $item->itemnumber });;
+            if (! defined $openissue) {
                 $errors->{'NOT_ONLOAN'} = $barcode ;
             }
             elsif (! grep(/^$itype$/,@itypes) ) {
                 $errors->{'BAD_ITYPE'} = $itype;
             }
             else {
-                my $borrowernumber = $openissue->{'borrowernumber'};
+                my $borrowernumber = $openissue->borrowernumber;
+                my $patron         = Koha::Patrons->find($borrowernumber);
                 my ($ret, $messages ) = AddReturn($barcode, $branch);
-                if ($ret != 0) {
+                if ($ret != 1) {
 
                     # AddReturn has a lot of return possibilities and
                     # a none zero return does'nt mean it wasn't
@@ -148,7 +149,7 @@ sub tool_putaside {
                             . $value ;
                     }
                 }
-                my $canitembereserved = CanItemBeReserved( $borrowernumber, $item->itemnumber );
+                my $canitembereserved = CanItemBeReserved( $patron, $item );
                 if ($canitembereserved->{'status'} eq 'OK') {
                     my $error;
                     $resid = AddReserve({
